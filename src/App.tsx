@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import { Formik } from "formik";
+import axios from "axios"
+import { MyFormExample } from './components/MyFormExample';
 
-function App() {
+
+const App: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Formik
+      initialValues={{ firstField: '', secondField: '' }}
+      onSubmit={async (value, { setFieldValue }) => {
+        setIsLoading(true)
+        try {
+          const { data } = await axios.get(
+            `https://jsonplaceholder.typicode.com/posts/${value.firstField}`,
+          );
+          setFieldValue('secondField', data.title);
+          setTimeout(() => {
+            setIsLoading(false)
+          }, 500);
+        } catch (error) {
+          console.log(error);
+          setFieldValue('secondField', 'Error')
+          setTimeout(() => {
+            setIsLoading(false)
+          }, 500);
+        }
+      }}
+    >
+      <MyFormExample
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+      />
+    </Formik>
   );
-}
+};
+
+
 
 export default App;
