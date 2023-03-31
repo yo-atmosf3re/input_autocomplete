@@ -1,15 +1,6 @@
 import { useFormikContext } from 'formik';
 import React from 'react'
-
-interface FieldExampleI {
-   firstField: string
-   secondField: string
-}
-
-interface MyFormFieldPropsI {
-   isLoading: boolean
-   setIsLoading: (hasLoading: boolean) => void
-}
+import { MyFormFieldPropsI, FieldExampleI } from './MyFormExample.types';
 
 const IDLE_STYLES = { color: 'red' }
 
